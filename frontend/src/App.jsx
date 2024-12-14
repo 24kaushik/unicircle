@@ -1,10 +1,13 @@
-function App() {
+import Home from "./components/Home";
+import { MyNavbar } from "./components/Navbar";
 
+function App() {
   return (
     <>
-    hello world
+      <MyNavbar />
+      <Home/>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

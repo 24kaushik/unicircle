@@ -2,14 +2,18 @@ import React from "react";
 import Marquee from "react-fast-marquee";
 import { Button } from "flowbite-react";
 import heroImg from "../assets/hero.jpeg";
-
+import About from "./About";
 import { FaLongArrowAltRight, FaShoppingBag } from "react-icons/fa";
+import Contact from "./Contact";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   return (
     <div>
       <Section1 />
       <Section2 />
+      <Section3 />
+      <Section4 />
     </div>
   );
 };
@@ -27,18 +31,22 @@ const Section1 = () => {
           college campus!
         </h1>
         <div className="flex space-x-4">
-          <Button>
-            <span className="flex items-center">
-              Get Started &nbsp;
-              <FaLongArrowAltRight />
-            </span>
-          </Button>
-          <Button>
-            <span className="flex items-center">
-              Check Out The Store &nbsp;
-              <FaShoppingBag />
-            </span>
-          </Button>
+          <Link to="/signup">
+            <Button>
+              <span className="flex items-center">
+                Get Started &nbsp;
+                <FaLongArrowAltRight />
+              </span>
+            </Button>
+          </Link>
+          <Link to="/store/buy">
+            <Button>
+              <span className="flex items-center">
+                Check Out The Store &nbsp;
+                <FaShoppingBag />
+              </span>
+            </Button>
+          </Link>
         </div>
       </div>
       <div className="w-1/2 min-h-[80vh] flex items-center overflow-hidden">
@@ -50,8 +58,8 @@ const Section1 = () => {
 
 const Section2 = () => {
   return (
-    <div className="overflow-hidden">
-      <h1 className="text-center font-noto-semi text-5xl text-gray-400">
+    <div className="overflow-hidden my-10">
+      <h1 className="text-center font-dm-serif text-5xl text-gray-500">
         Our Partners
       </h1>
       <Marquee className="my-10">
@@ -67,6 +75,28 @@ const Section2 = () => {
         <img className="h-24 mx-7" src="./img10.jpg" alt="hospital 8" />
         <img className="h-24 mx-7" src="./img11.jpg" alt="hospital 8" />
       </Marquee>
+    </div>
+  );
+};
+
+const Section3 = () => {
+  return (
+    <div className="mt-20">
+      <h1 className="text-center font-dm-serif text-6xl text-gray-800">
+        About us
+      </h1>
+      <About />
+    </div>
+  );
+};
+
+const Section4 = () => {
+  return (
+    <div className="my-10">
+      <h1 className="text-center font-dm-serif text-6xl text-gray-800">
+        Contact us
+      </h1>
+      <Contact />
     </div>
   );
 };

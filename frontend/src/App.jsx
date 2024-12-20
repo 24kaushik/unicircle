@@ -6,7 +6,9 @@ import Login from "./components/Login";
 import { MyNavbar } from "./components/Navbar";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Signup from "./components/Signup";
-import Store, { Section1, Section2, Section3 } from "./components/store/Store";
+import Store, { Section1, Section2, Section3 } from "./components/Store";
+import ProductDetails from "./components/ProductDetails";
+import Profile from "./components/Profile";
 
 function App() {
   return (
@@ -19,11 +21,13 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/store" element={<Store />}>
             <Route path="sell" element={<Section1 />} />
             <Route path="buy" element={<Section2 />} />
             <Route path="rent" element={<Section3 />} />
           </Route>
+          <Route path="/product/details/:id" element={<ProductDetails/>} />
           <Route
             path="*"
             element={

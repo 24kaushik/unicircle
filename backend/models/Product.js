@@ -43,6 +43,10 @@ const productSchema = new Schema({
     ref: 'User',
     required: true
   },
+  sold: {
+    type: Boolean,
+    default: false
+  },
   college:{
     type: String,
     required: true

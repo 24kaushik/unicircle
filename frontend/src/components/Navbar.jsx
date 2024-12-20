@@ -17,7 +17,8 @@ export function MyNavbar() {
         </Navbar.Brand>
         <div className="flex md:order-2 sm:mx-10 sm:space-x-2">
           {localStorage.getItem("token") ? (
-            <Button color="failure" onClick={handleLogout}>Logout</Button>
+            <><Button color="failure" onClick={handleLogout}>Logout</Button>
+            <Link to="/profile"><Button color="blue">Profile</Button></Link></>
           ) : (
             <>
               <Link to="/login">
@@ -39,7 +40,7 @@ export function MyNavbar() {
             <Link to="/about">About</Link>
           </Navbar.Link>
           <Navbar.Link>
-            <Link to="/store/sell">Store</Link>
+            <Link to="/store/buy">Store</Link>
           </Navbar.Link>
           <Navbar.Link>
             <Link to="/contact">Contact</Link>

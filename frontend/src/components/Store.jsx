@@ -13,15 +13,28 @@ import {
 } from "flowbite-react";
 
 const Store = () => {
+  const [profileData, setProfileData] = useState(null);
+
   useEffect(() => {
     if (localStorage.getItem("token") === null) {
       window.location.href = "/login";
     }
+    fetch("http://localhost:3000/me", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("token"),
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => setProfileData(data))
+      .catch((error) => console.error("Error fetching profile data:", error));
   });
+
   return (
     <div>
       <h1 className="text-center font-dm-serif my-10 text-6xl text-gray-800">
-        Welcome to Quantum University Store!
+        Welcome to {profileData?.college =="quantumuniversity"? "Quantum University": "RIT"} Store!
       </h1>
       <Outlet />
     </div>
@@ -421,7 +434,17 @@ const BuyCard = ({ name, id, desc, img, price, cat, seller }) => {
   );
 };
 
-const RentCard = ({ name, id, desc, img, price, cat, seller, duration, durationType }) => {
+const RentCard = ({
+  name,
+  id,
+  desc,
+  img,
+  price,
+  cat,
+  seller,
+  duration,
+  durationType,
+}) => {
   return (
     <div>
       <Card
@@ -435,11 +458,9 @@ const RentCard = ({ name, id, desc, img, price, cat, seller, duration, durationT
         )}
       >
         <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-        {name}
+          {name}
         </h5>
-        <p className="font-normal text-gray-700 dark:text-gray-400">
-          {desc}
-        </p>
+        <p className="font-normal text-gray-700 dark:text-gray-400">{desc}</p>
         <div>
           <span className="text-sm font-medium text-gray-500 dark:text-white">
             Category: {cat}
@@ -452,7 +473,7 @@ const RentCard = ({ name, id, desc, img, price, cat, seller, duration, durationT
         </div>
         <div className="flex items-center justify-between">
           <span className="text-xl font-bold text-gray-900 dark:text-white">
-            Rs. {price} /{duration + " " +durationType}
+            Rs. {price} /{duration + " " + durationType}
           </span>
           <Link
             to={`/product/details/${id}`}

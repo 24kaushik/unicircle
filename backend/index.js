@@ -1,6 +1,6 @@
 // Sorry for the messy code, I will refactor it later. Did it in a hurry because of hackathon.
 
-import express, { json } from "express";
+import express, { json, response } from "express";
 import cors from "cors";
 import User from "./models/User.js";
 import Product from "./models/Product.js";
@@ -80,11 +80,9 @@ app.post("/login", async (req, res) => {
 
 app.get("/me", authMiddleware, async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select("-password");
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-    res.status(200).json(user);
+    const products = await Product.find({ seller: req.user._id }).populate("seller", "name email");
+    const response = { ...req.user, products };
+    res.status(200).json(response);
   } catch (error) {
     res.status(500).json({ message: "Server error" });
     console.log(error);
@@ -156,7 +154,7 @@ app.post("/getproducts", authMiddleware, async (req, res) => {
   }
 
   try {
-    const products = await Product.find({ type, college: req.user.college }).populate("seller", "name email");;
+    const products = await Product.find({ type, college: req.user.college, sold: false }).populate("seller", "name email");
     res.status(200).json(products);
   } catch (error) {
     res.status(500).json({ message: "Server error" });
@@ -175,6 +173,40 @@ app.get("/product/:id", authMiddleware, async (req, res) => {
     }
 
     res.status(200).json(product);
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+    console.log(error);
+  }
+});
+
+app.get("/myproducts", authMiddleware, async (req, res) => {
+  try {
+    
+    res.status(200).json(products);
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+    console.log(error);
+  }
+});
+
+app.post("/product/toggleSell/:id", authMiddleware, async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const product = await Product.findById(id);
+
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    if (product.seller.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ message: "You are not authorized to sell this product" });
+    }
+
+    product.sold = !product.sold;
+    await product.save({ validateBeforeSave: false });
+
+    res.status(200).json({ message: "Product sold toggled" });
   } catch (error) {
     res.status(500).json({ message: "Server error" });
     console.log(error);
